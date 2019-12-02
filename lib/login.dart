@@ -19,10 +19,13 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 80.0),
             Column(
               children: <Widget>[
-                Image.asset('assets/diamond.png'),
+                Image.asset('assets/diamond.png',
+                color: kShrineBlack,
+                ),
                 SizedBox(height: 16.0),
                 Text('SUBHI APP'),
               ],
+              
             ),
             SizedBox(height: 120.0),
             // TODO: Wrap Username with AccentColorOverride (103)
