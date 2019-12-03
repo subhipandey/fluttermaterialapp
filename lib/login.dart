@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
             Column(
               children: <Widget>[
                 Image.asset('assets/diamond.png',
-                color: kShrineBlack,
+                color: Colors.black,
                 ),
                 SizedBox(height: 16.0),
                 Text('SUBHI APP'),
