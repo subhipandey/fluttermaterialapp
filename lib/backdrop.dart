@@ -35,10 +35,12 @@ class _FrontLayer extends StatelessWidget {
   // TODO: Add on-tap callback (104)
   const _FrontLayer({
     Key key,
+    this.onTap,
     this.child,
   }) : super(key: key);
 
   final Widget child;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,14 @@ class _FrontLayer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           // TODO: Add a GestureDetector (104)
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: onTap,
+            child: Container(
+              height: 40.0,
+              alignment: AlignmentDirectional.centerStart,
+            ),
+          ),
           Expanded(
             child: child,
           ),
@@ -86,6 +96,17 @@ class _BackdropState extends State<Backdrop>
     super.dispose();
   }
 
+  @override
+  void didUpdateWidget(Backdrop old) {
+    super.didUpdateWidget(old);
+
+    if (widget.currentCategory != old.currentCategory) {
+      _toggleBackdropLayerVisibility();
+    } else if (!_frontLayerVisible) {
+      _controller.fling(velocity: _kFlingVelocity);
+    }
+  }
+
   // TODO: Add functions to get and change front layer visibility (104)
 
   bool get _frontLayerVisible {
@@ -102,6 +123,37 @@ class _BackdropState extends State<Backdrop>
 
   // TODO: Add BuildContext and BoxConstraints parameters to _buildStack (104)
   
+    Widget _buildStack(BuildContext context, BoxConstraints constraints) {
+    const double layerTitleHeight = 48.0;
+    final Size layerSize = constraints.biggest;
+    final double layerTop = layerSize.height - layerTitleHeight;
+
+    // TODO: Create a RelativeRectTween Animation (104)
+    Animation<RelativeRect> layerAnimation = RelativeRectTween(
+      begin: RelativeRect.fromLTRB(
+          0.0, layerTop, 0.0, layerTop - layerSize.height),
+      end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
+    ).animate(_controller.view);
+
+    return Stack(
+      key: _backdropKey,
+      children: <Widget>[
+        ExcludeSemantics(
+          child: widget.backLayer,
+          excluding: _frontLayerVisible,
+        ),
+        // TODO: Add a PositionedTransition (104)
+        PositionedTransition(
+          rect: layerAnimation,
+          child: _FrontLayer(
+            // TODO: Implement onTap property on _BackdropState (104)
+            onTap: _toggleBackdropLayerVisibility,
+            child: widget.frontLayer,
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +164,10 @@ class _BackdropState extends State<Backdrop>
       // TODO: Replace leading menu icon with IconButton (104)
       // TODO: Remove leading property (104)
       // TODO: Create title with _BackdropTitle parameter (104)
-      leading: Icon(Icons.menu),
+      leading: IconButton(
+      icon: Icon(Icons.menu),
+      onPressed: _toggleBackdropLayerVisibility,
+      ),
       title: Text('SHRINE'),
       actions: <Widget>[
         // TODO: Add shortcut to login screen from trailing icons (104)
@@ -143,3 +198,4 @@ class _BackdropState extends State<Backdrop>
     );
   }
 }
+
