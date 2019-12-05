@@ -63,3 +63,6 @@ flutter:
     - packages/shrine_images/35-0.jpg
     - packages/shrine_images/36-0.jpg
     - packages/shrine_images/37-0.jpg
+    - assets/diamond.png
+    - assets/slanted_menu.png
+    - packages/shrine_images/0-0.jpg
