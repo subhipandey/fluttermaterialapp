@@ -1,3 +1,3 @@
 # fluttermaterialapp
 
-A samall ecommerce app i learned to make while learning flutter
+A small ecommerce app i learned to make while learning flutter
